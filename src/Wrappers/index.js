@@ -1,0 +1,1 @@
+export ViewWrappedText from './ViewWrappedText';
