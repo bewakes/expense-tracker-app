@@ -16,38 +16,66 @@ class SplashScreen extends PureComponent {
                 backgroundColor="#4682B4"
                 barStyle="light-content"
             />
-                <SplashGreeting style={{flex:4}}/>
+                <SplashTitle />
+                <SplashSubText />
                 <SplashButton />
             </View>
         );
     }
 };
 
-class SplashGreeting extends PureComponent {
+class SplashTitle extends PureComponent {
     render() {
         return (
-            <View style={{flex:3, alignItems:'center'}}>
-                <Text> </Text>
+            <View style={{
+                flex:3,
+                justifyContent:'center',
+                alignItems:'center'
+            }}>
                 <Text style={{
                     fontFamily:'titillium-web-bold',
                     color: 'white',
-                    fontSize: 60
-                }}> WELCOME </Text>
+                    fontSize: 57
+                }}>EXPENSE TRACKER</Text>
             </View>
         );
     }
 };
 
+class SplashSubText extends PureComponent {
+    render() {
+        return (
+            <View style={{
+                flex:6,
+                justifyContent:'flex-start',
+                alignItems:'center'
+            }}>
+                <Text style={{
+                    fontFamily:'titillium-web-regular',
+                    color: 'white',
+                    fontSize: 35,
+                    textAlign: 'center'
+                }}>Never lose track of what you spend again</Text>
+            </View>
+        );
+    }
+}
+
 class SplashButton extends PureComponent {
     render() {
         return (
-            <View style={{flex:1, width:250}}>
+            <View style={{
+                flex:2,
+                width:250,
+                justifyContent: 'center'
+            }}>
                 <Button title="proceed" color={AppStyles.AppColors.secondaryColor} onPress={()=>{}}/>
             </View>
         );
     }
 }
 
+// not used
 const touchable = (
 <TouchableOpacity style={{
                     backgroundColor: AppStyles.AppColors.secondaryColor,

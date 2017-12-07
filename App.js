@@ -13,21 +13,24 @@ export default class App extends PureComponent {
         super(props);
         this.state = {ready: false}
     }
-    componentDidMount() {
-        Font.loadAsync({
+    async componentDidMount() {
+        await Font.loadAsync({
         'titillium-web-bold': require('./assets/fonts/TitilliumWeb-Bold.ttf'),
         'titillium-web-black': require('./assets/fonts/TitilliumWeb-Black.ttf'),
         'titillium-web-regular': require('./assets/fonts/TitilliumWeb-Regular.ttf'),
+        'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
         });
         this.setState({ready:true});
   }
 
     render() {
         if (!this.state.ready) {
+            console.log('NOTREADY');
             return (
                 <Text>Loading..</Text>
             );
         }
+        console.log('READY');
         return (
             <SplashScreen />
         );
