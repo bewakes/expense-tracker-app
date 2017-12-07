@@ -1,8 +1,13 @@
 import React, {PureComponent} from 'react';
 import { Button, StatusBar, StyleSheet, TouchableOpacity, Text, TextInput, View } from 'react-native';
 import AppStyles from '../appStyles/styles';
+import {FacebookButton} from '../FacebookLogin';
 
 class SplashScreen extends PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <View style={{
@@ -18,7 +23,7 @@ class SplashScreen extends PureComponent {
             />
                 <SplashTitle />
                 <SplashSubText />
-                <SplashButton />
+                <SplashButton onLoginPress={this.props.onLoginPress} />
             </View>
         );
     }
@@ -28,7 +33,7 @@ class SplashTitle extends PureComponent {
     render() {
         return (
             <View style={{
-                flex:3,
+                flex:4,
                 justifyContent:'center',
                 alignItems:'center'
             }}>
@@ -46,7 +51,7 @@ class SplashSubText extends PureComponent {
     render() {
         return (
             <View style={{
-                flex:6,
+                flex:7,
                 justifyContent:'flex-start',
                 alignItems:'center'
             }}>
@@ -62,14 +67,22 @@ class SplashSubText extends PureComponent {
 }
 
 class SplashButton extends PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    handleLoginPress = (e) => {
+        this.props.onLoginPress();
+    }
+
     render() {
         return (
             <View style={{
-                flex:2,
+                flex:3,
                 width:250,
-                justifyContent: 'center'
+                justifyContent: 'flex-start'
             }}>
-                <Button title="proceed" color={AppStyles.AppColors.secondaryColor} onPress={()=>{}}/>
+                <FacebookButton onPress={this.handleLoginPress} />
             </View>
         );
     }

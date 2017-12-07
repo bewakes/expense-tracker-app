@@ -2,8 +2,9 @@ import React, {PureComponent} from 'react';
 import SplashScreen from './src/SplashScreen/SplashScreen';
 import HomeScreen from './src/HomeScreen/HomeScreen';
 import AppColors from './src/appStyles/styles';
-import { Button, View, Text } from 'react-native';
+import { Text } from 'react-native';
 import {Font} from 'expo';
+import {identityHandler} from './src/Helpers';
 import {
   StackNavigator,
 } from 'react-navigation';
@@ -11,17 +12,32 @@ import {
 export default class App extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = {ready: false}
+        this.state = {
+            ready: false,
+            loggedIn:false,
+            userIdentity: null
+        }
     }
     async componentDidMount() {
         await Font.loadAsync({
-        'titillium-web-bold': require('./assets/fonts/TitilliumWeb-Bold.ttf'),
-        'titillium-web-black': require('./assets/fonts/TitilliumWeb-Black.ttf'),
-        'titillium-web-regular': require('./assets/fonts/TitilliumWeb-Regular.ttf'),
-        'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
+            'titillium-web-bold': require('./assets/fonts/TitilliumWeb-Bold.ttf'),
+            'titillium-web-black': require('./assets/fonts/TitilliumWeb-Black.ttf'),
+            'titillium-web-regular': require('./assets/fonts/TitilliumWeb-Regular.ttf'),
+            'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
         });
         this.setState({ready:true});
-  }
+    }
+
+    onLoginPress = () => {
+        this.doLogin();
+    }
+
+    doLogin = () => {
+        const loggedIn = true;
+        const data = {};
+        const userIdentity = identityHandler(data);
+        this.setState({loggedIn, userIdentity});
+    }
 
     render() {
         if (!this.state.ready) {
@@ -30,10 +46,16 @@ export default class App extends PureComponent {
                 <Text>Loading..</Text>
             );
         }
-        console.log('READY');
+        if (!this.state.loggedIn) {
+            console.log('NOT LOGGED IN');
+            return (
+                <SplashScreen onLoginPress={this.onLoginPress} />
+            );
+        }
+        console.log('LOGGED IN');
         return (
-            <SplashScreen />
-        );
+            <HomeScreen userDetails={this.state.userDetails} />
+        )
     }
 }
 

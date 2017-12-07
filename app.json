@@ -1,6 +1,9 @@
 {
   "expo": {
     "sdkVersion": "23.0.0",
+    "android": {
+        "package": "com.bewakes.expenses"
+    },
     "androidStatusBar": {
         "backgroundColor": "#005589",
         "barStyle": "light-content"
