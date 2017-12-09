@@ -10,16 +10,14 @@ const screens  = {
 };
 
 const screensWithoptions = Object.keys(screens).reduce((a,e) => {
-    console.log({...screens[e]});
         a[e] = {
             ...screens[e],
             navigationOptions: {
                 headerStyle: {
-                    backgroundColor: AppStyles.AppColors.primaryColor
+                    backgroundColor: AppStyles.primaryColor
                 },
                 headerTitleStyle: {
                     color: 'white',
-                    fontFamily:'titillium-web-regular'
                 },
             }
         };
@@ -36,7 +34,7 @@ export default HomeScreen = StackNavigator({
         screen: Expenses,
         navigationOptions:{
             title: 'Expenses',
-            headerStyle: { backgroundColor: AppStyles.AppColors.primaryColor },
+            headerStyle: { backgroundColor: AppStyles.primaryColor },
             headerTitleStyle: {
                 color: 'white',
                 fontFamily:'titillium-web-regular',
@@ -50,7 +48,7 @@ export default HomeScreen = StackNavigator({
             title: 'Add Expense',
             headerTintColor: 'white',
             headerStyle: {
-                backgroundColor: AppStyles.AppColors.primaryColor,
+                backgroundColor: AppStyles.primaryColor,
             },
             headerTitleStyle: {
                 color: 'white',

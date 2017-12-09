@@ -6,7 +6,7 @@ const iconName = 'facebook';
 
 export default FaceBookButton = (props) => {
   let renderable = (
-    <View style={{padding:3, backgroundColor:AppStyles.AppColors.primaryColor}}>
+    <View style={{padding:3, backgroundColor:AppStyles.primaryColor}}>
     <TouchableHighlight
       underlayColor='#99d9f4'
       style={{elevation:2}}

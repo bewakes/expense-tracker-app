@@ -13,7 +13,7 @@ class SplashScreen extends PureComponent {
             <View style={{
                 flex: 1,
                 flexDirection: 'column',
-                backgroundColor: AppStyles.AppColors.primaryColor,
+                backgroundColor: AppStyles.primaryColor,
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
@@ -91,7 +91,7 @@ class SplashButton extends PureComponent {
 // not used
 const touchable = (
 <TouchableOpacity style={{
-                    backgroundColor: AppStyles.AppColors.secondaryColor,
+                    backgroundColor: AppStyles.secondaryColor,
                     ... AppStyles.buttonStyle
                 }}
                 onPress={() => {}}

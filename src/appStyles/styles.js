@@ -1,9 +1,20 @@
+const textColor = '#777777';
+
 export default AppStyles = {
-    AppColors: {
-        primaryColor: '#1e90ff', // bluish
-        headerColor: 'white',
-        secondaryColor: '#ff9900',
-        secondaryColorDark: '#ff6600',
+    // colors
+    primaryColor: '#1e90ff', // bluish
+    headerColor: 'white',
+    cardColor: 'white',
+    cardTouchColor: '#eeeeee',
+    secondaryColor: '#ff9900',
+    secondaryColorDark: '#ff6600',
+    textColor: textColor,
+    dimTextColor: '#888888',
+    screenBackgroundColor: '#cccccc',
+
+    textStyle: {
+        fontWeight: 'bold',
+        color: textColor,
     },
 
     buttonStyle: {
@@ -14,5 +25,26 @@ export default AppStyles = {
         shadowColor: 'black',
         shadowOpacity: 0.5,
         alignItems: 'center'
+    },
+    shadowStyle: {
+        shadowOffset: {width:2, height:2},
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+    },
+    cardStyleV: {
+        flexDirection: 'column',
+        minHeight:75,
+        //padding: 7,
+        borderBottomColor: '#dddddd',
+        borderBottomWidth: 0.75,
+    },
+    smallCardStyle: {
+        padding: 7,
+        borderBottomColor: '#dddddd',
+        borderBottomWidth: 0.5,
+        minHeight: 25,
+    },
+
+    cardStyleH: {
     }
 }
