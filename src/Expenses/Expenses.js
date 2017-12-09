@@ -110,29 +110,32 @@ export default class Expenses extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={{
-                flex:1,
-                flexDirection: 'column',
-                backgroundColor: '#eeeeee',
-            }}>
-                
-            {this.state.expenses.map((x, i) => {
-                let style = {};
-                if (x.showDetails) {
-                    style = {
-                        borderColor: '#ccc',
-                        borderWidth: 2,
-                        borderLeftWidth: 3,
-                        borderRightWidth: 3,
+            <View style={{flex:1, flexDirection:'column', justifyContent:'flex-start'}}>
+                <View style={{
+                    flex:1,
+                    flexDirection: 'column',
+                    backgroundColor: '#eeeeee',
+                }}>
+                {this.state.expenses.map((x, i) => {
+                    let style = {};
+                    if (x.showDetails) {
+                        style = {
+                            borderColor: '#ccc',
+                            borderWidth: 2,
+                            borderLeftWidth: 3,
+                            borderRightWidth: 3,
+                        }
                     }
+                    return (
+                        <View key={i}>
+                            <ExpenseSummary style={style} index={i}  data={x} pressHandler={this._handleExpensePress} />
+                            {x.showDetails ? (<ExpenseDetails data={x.details} />) : (<View />)}
+                        </View>
+                    );})
                 }
-                return (
-                    <View key={i}>
-                        <ExpenseSummary style={style} index={i}  data={x} pressHandler={this._handleExpensePress} />
-                        {x.showDetails ? (<ExpenseDetails data={x.details} />) : (<View />)}
-                    </View>
-                );})
-            }
+                </View>
+                <LoadMore />
+                <FloatingAddButton />
             </View>
         );
     }
@@ -209,6 +212,7 @@ class ExpenseDetails extends React.PureComponent {
                         <ExpenseDetail key={i} data={x} />
                     ))
                 }
+                
             </View>
         );
     }
@@ -251,3 +255,49 @@ class ExpenseDetail extends React.PureComponent {
         );
     }
 }
+
+const LoadMore = (props) => (
+    <View
+        {...props}
+        style={{
+            ...AppStyles.smallCardStyle,
+            flexDirection:'row',
+    }}>
+        <Text
+            style={{
+                ...AppStyles.textStyle,
+                fontSize:17,
+                textAlign:'center',
+                fontFamily:'titillium-web-bold',
+                color: AppStyles.dimTextColor,
+                flex:1
+        }}>
+            Load More.
+        </Text>
+    </View>
+)
+
+const FloatingAddButton = (props) => (
+        <TouchableHighlight
+            onPress={()=>{}}
+            underlayColor={AppStyles.secondaryColorLight}
+            style={{
+                width: 60,
+                height: 60,
+                position:'absolute',
+                bottom:35,
+                right:50,
+                borderRadius: 30,
+                backgroundColor: AppStyles.secondaryColor,
+        }}>
+            <Text style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 15,
+                fontFamily: 'titillium-web-bold',
+                fontSize: 60,
+                textAlign:'center',
+                color: 'white'
+            }}>+</Text>
+    </TouchableHighlight>
+)
