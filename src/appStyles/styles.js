@@ -7,7 +7,7 @@ export default AppStyles = {
     cardColor: 'white',
     cardTouchColor: '#eeeeee',
     secondaryColor: '#ff9900',
-    secondaryColorDark: '#ffaa00',
+    secondaryColorDark: '#ee8800',
     secondaryColorLight: '#ffaa00',
     textColor: textColor,
     dimTextColor: '#888888',

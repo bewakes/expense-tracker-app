@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TouchableHighlight } from 'react-native';
+import { Text, ScrollView, View, Button, TouchableHighlight } from 'react-native';
 import AppStyles from '../appStyles/styles';
 
 const expensesData = [
@@ -78,7 +78,7 @@ const expenseDetails = [
 
 const orgId = 3;
 
-export default class Expenses extends React.Component {
+export default class Expenses extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -100,17 +100,28 @@ export default class Expenses extends React.Component {
         console.log('Pressed: ' + i);
         let exps = this.state.expenses.slice();
         if (exps[i].details.length == 0) {
-            var details = this._getExpense_details(i, expense);
-            exps[i].details = details;
+            exps[i].details = this._getExpense_details(i, expense);
         }
         exps[i].showDetails = !exps[i].showDetails;
         this.setState({expenses:exps});
     }
 
+    loadMore = () => {
+        let exps = this.state.expenses.slice();
+        let exps2 = expensesData.map(x => {
+                x.showDate=true;
+                x.showDetails=false;
+                x.details= [];
+                return x;
+        });
+        this.setState({expenses:[...exps, ...exps2]});
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={{flex:1, flexDirection:'column', justifyContent:'flex-start'}}>
+            <View style={{flex:1}}>
+            <ScrollView>
                 <View style={{
                     flex:1,
                     flexDirection: 'column',
@@ -134,8 +145,9 @@ export default class Expenses extends React.Component {
                     );})
                 }
                 </View>
-                <LoadMore />
-                <FloatingAddButton />
+                <LoadMore onPress={this.loadMore} />
+            </ScrollView>
+            <FloatingAddButton />
             </View>
         );
     }
@@ -263,6 +275,9 @@ const LoadMore = (props) => (
             ...AppStyles.smallCardStyle,
             flexDirection:'row',
     }}>
+        <TouchableHighlight
+            onPress={props.onPress}
+        >
         <Text
             style={{
                 ...AppStyles.textStyle,
@@ -274,16 +289,18 @@ const LoadMore = (props) => (
         }}>
             Load More.
         </Text>
+        </TouchableHighlight>
     </View>
 )
 
 const FloatingAddButton = (props) => (
         <TouchableHighlight
             onPress={()=>{}}
-            underlayColor={AppStyles.secondaryColorLight}
+            underlayColor={AppStyles.secondaryColorDark}
             style={{
                 width: 60,
                 height: 60,
+                elevation: 4,
                 position:'absolute',
                 bottom:35,
                 right:50,
