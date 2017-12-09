@@ -103,12 +103,7 @@ export default class Expenses extends React.Component {
             var details = this._getExpense_details(i, expense);
             exps[i].details = details;
         }
-        exps[i].showDetails  = !exps[i].showDetails;
-        if(! exps[i].showDetails) {
-            console.log('hiding details');
-        }
-        else console.log('showing details');
-
+        exps[i].showDetails = !exps[i].showDetails;
         this.setState({expenses:exps});
     }
 
@@ -118,23 +113,25 @@ export default class Expenses extends React.Component {
             <View style={{
                 flex:1,
                 flexDirection: 'column',
-                backgroundColor: AppStyles.cardColor
+                backgroundColor: '#eeeeee',
             }}>
-            {this.state.expenses.map((x, i) => (
-                <TouchableHighlight
-                    style={{...AppStyles.cardStyleV,
-                        justifyContent: 'center',
-                    }}
-                    underlayColor={AppStyles.cardTouchColor}
-                    key={i}
-                    onPress={() => this._handleExpensePress(i, x)}
-                >
-                    <View>
-                        <ExpenseSummary date={x.date} total={x.total} />
+                
+            {this.state.expenses.map((x, i) => {
+                let style = {};
+                if (x.showDetails) {
+                    style = {
+                        borderColor: '#ccc',
+                        borderWidth: 2,
+                        borderLeftWidth: 3,
+                        borderRightWidth: 3,
+                    }
+                }
+                return (
+                    <View key={i}>
+                        <ExpenseSummary style={style} index={i}  data={x} pressHandler={this._handleExpensePress} />
                         {x.showDetails ? (<ExpenseDetails data={x.details} />) : (<View />)}
                     </View>
-                </TouchableHighlight>
-                ))
+                );})
             }
             </View>
         );
@@ -150,29 +147,40 @@ class ExpenseSummary extends React.PureComponent {
         this._root.setNativeProps(nativeProps);
     }
     render() {
+        const {index, data} = this.props;
         return (
-            <View
-                ref={component => this._root = component} {...this.props}
-                style={{
-                    flexDirection:'row',
-                    padding: 7
-            }}>
-                <Text
+            <TouchableHighlight
                     style={{
-                        ...AppStyles.textStyle,
-                        flex: 3,
-                        fontSize: 17,
+                        ...AppStyles.cardStyleV,
+                        ...this.props.style,
+                        justifyContent: 'center',
+                    }}
+                    underlayColor={AppStyles.cardTouchColor}
+                    //key={i}
+                    onPress={() => this.props.pressHandler(index, data)}
+                >
+                <View
+                    ref={component => this._root = component} {...this.props}
+                    style={{
+                        flexDirection:'row',
                 }}>
-                    {this.props.date}
-                </Text>
-                <Text
-                    style={{
-                        ...AppStyles.textStyle,
-                        fontSize: 17,
+                    <Text
+                        style={{
+                            ...AppStyles.textStyle,
+                            flex: 3,
+                            fontSize: 17,
                     }}>
-                    Rs.{this.props.total}
-                </Text>
-            </View>
+                        {(new Date(this.props.data.date)).toDateString()}
+                    </Text>
+                    <Text
+                        style={{
+                            ...AppStyles.textStyle,
+                            fontSize: 17,
+                        }}>
+                        Rs.{this.props.data.total}
+                    </Text>
+                </View>
+            </TouchableHighlight>
         );
     }
 }

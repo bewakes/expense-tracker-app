@@ -6,15 +6,16 @@ export default AppStyles = {
     headerColor: 'white',
     cardColor: 'white',
     cardTouchColor: '#eeeeee',
-    secondaryColor: '#ff9900',
+    secondaryColor: '#0dba2f', //'#ff9900',
     secondaryColorDark: '#ff6600',
     textColor: textColor,
     dimTextColor: '#888888',
     screenBackgroundColor: '#cccccc',
 
     textStyle: {
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
         color: textColor,
+        fontFamily: 'titillium-web-bold'
     },
 
     buttonStyle: {
@@ -33,13 +34,16 @@ export default AppStyles = {
     },
     cardStyleV: {
         flexDirection: 'column',
-        minHeight:75,
-        //padding: 7,
+        minHeight:60,
+        backgroundColor: 'white',
+        //borderRadius: 1,
+        padding: 7,
         borderBottomColor: '#dddddd',
         borderBottomWidth: 0.75,
     },
     smallCardStyle: {
         padding: 7,
+        //borderRadius:1,
         borderBottomColor: '#dddddd',
         borderBottomWidth: 0.5,
         minHeight: 25,
