@@ -147,7 +147,7 @@ export default class Expenses extends React.PureComponent {
                 </View>
                 <LoadMore onPress={this.loadMore} />
             </ScrollView>
-            <FloatingAddButton />
+            <FloatingAddButton onPress={() => navigate('addExpense', {})} />
             </View>
         );
     }
@@ -224,7 +224,6 @@ class ExpenseDetails extends React.PureComponent {
                         <ExpenseDetail key={i} data={x} />
                     ))
                 }
-                
             </View>
         );
     }
@@ -268,34 +267,36 @@ class ExpenseDetail extends React.PureComponent {
     }
 }
 
-const LoadMore = (props) => (
-    <View
-        {...props}
-        style={{
-            ...AppStyles.smallCardStyle,
-            flexDirection:'row',
-    }}>
-        <TouchableHighlight
-            onPress={props.onPress}
-        >
-        <Text
-            style={{
-                ...AppStyles.textStyle,
-                fontSize:17,
-                textAlign:'center',
-                fontFamily:'titillium-web-bold',
-                color: AppStyles.dimTextColor,
-                flex:1
-        }}>
-            Load More.
-        </Text>
-        </TouchableHighlight>
-    </View>
-)
+const LoadMore = (props) => {
+    let {onPress, otherProps} = props;
+        return (
+            <TouchableHighlight
+                onPress={onPress}
+                style={{
+                    ...AppStyles.smallCardStyle,
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}
+                underlayColor="#cccccc"
+            >
+            <Text
+                style={{
+                    ...AppStyles.textStyle,
+                    fontSize:17,
+                    textAlign:'center',
+                    fontFamily:'titillium-web-bold',
+                    color: AppStyles.dimTextColor,
+                    flex:1
+            }}>
+                Load More...
+            </Text>
+            </TouchableHighlight>
+    )
+};
 
 const FloatingAddButton = (props) => (
         <TouchableHighlight
-            onPress={()=>{}}
+            onPress={props.onPress}
             underlayColor={AppStyles.secondaryColorDark}
             style={{
                 width: 60,
