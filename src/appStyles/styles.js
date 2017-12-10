@@ -7,6 +7,7 @@ export default AppStyles = {
     cardColor: 'white',
     cardTouchColor: '#eeeeee',
     secondaryColor: '#ff9900',
+    formErrorColor: '#f03434',
     secondaryColorDark: '#ee8800',
     secondaryColorLight: '#ffaa00',
     textColor: textColor,
@@ -48,6 +49,13 @@ export default AppStyles = {
         borderBottomColor: '#dddddd',
         borderBottomWidth: 0.5,
         minHeight: 25,
+    },
+
+    textInputStyle: {
+        height: 50,
+        padding: 5,
+        fontSize: 25,
+        color: textColor,
     },
 
     cardStyleH: {
