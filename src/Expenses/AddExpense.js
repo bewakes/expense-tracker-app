@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TextInput, View, Button} from 'react-native';
+import {Text, TextInput, View, Button, Picker} from 'react-native';
 import AppStyles from '../appStyles';
 
 export default class AddExpense extends React.PureComponent {
@@ -52,6 +52,11 @@ class ExpenseForm extends React.PureComponent {
                     type="numeric"
                     errorCondition={(x)=>(x.length>2)}
                 />
+                <FormElement
+                    type="picker"
+                    label="Category"
+                    pickerData={[]}
+                />
             </View>
         );
     }
@@ -81,8 +86,17 @@ class FormElement extends React.Component {
     }
 
     render() {
-        let value = this.state.value;
         let colorstyle = this.state.error ? {color:AppStyles.formErrorColor}:{};
+        if (this.props.type === 'text' | this.props.type === 'numeric') {
+            return this.render_text(colorstyle);
+        }
+        else if (this.props.type === 'picker') {
+            return this.render_picker(colorstyle);
+        }
+    }
+
+    render_text(colorstyle) {
+        let value = this.state.value;
         return (
             <View style={{flexDirection:'column'}}>
                 <View style={{flexDirection:'row', justifyContent:'center'}}>
@@ -106,6 +120,29 @@ class FormElement extends React.Component {
                     onChangeText = {(text)=> this.handleChange(text)}
                     value = {value!=null ? value.toString() : ''}
                 />
+            </View>
+        );
+    }
+
+    render_picker(colorstyle) {
+        return (
+            <View style={{flexDirection:'column'}}>
+                <View style={{flexDirection:'row', justifyContent:'center'}}>
+                    <Text style={{
+                        ...AppStyles.textStyle,
+                        fontSize: 25,
+                        flex: 1,
+                        ...colorstyle
+                    }}>
+                        {this.props.label}
+                    </Text>
+                </View>
+                <Picker>
+                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="JavaScript" value="js" />
+                </Picker>
             </View>
         );
     }

@@ -52,7 +52,6 @@ export default AppStyles = {
     },
 
     textInputStyle: {
-        height: 50,
         padding: 5,
         fontSize: 25,
         color: textColor,
