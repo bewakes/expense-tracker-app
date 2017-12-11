@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TextInput, View, Button, Picker} from 'react-native';
+import {Text, TextInput, View, Button, Picker, DatePickerAndroid} from 'react-native';
 import AppStyles from '../appStyles';
 
 export default class AddExpense extends React.PureComponent {
@@ -57,6 +57,10 @@ class ExpenseForm extends React.PureComponent {
                     label="Category"
                     pickerData={[]}
                 />
+                <FormElement
+                    type="date"
+                    label="Date"
+                />
             </View>
         );
     }
@@ -73,6 +77,21 @@ class FormElement extends React.Component {
         };
     }
 
+    async onDateFocus() {
+        try {
+            const {action, year, month, day} = await DatePickerAndroid.open({
+                // Use `new Date()` for current date.
+                // May 25 2020. Month 0 is January.
+                date: new Date(2020, 4, 25)
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                // Selected year, month (0-11), day
+            }
+        } catch ({code, message}) {
+            console.warn('Cannot open date picker', message);
+        }
+    }
+
     handleChange = (text) => {
         if (this.props.errorCondition(text)) {
             this.setState({
@@ -87,16 +106,16 @@ class FormElement extends React.Component {
 
     render() {
         let colorstyle = this.state.error ? {color:AppStyles.formErrorColor}:{};
+        let renderElement = <View/>
         if (this.props.type === 'text' | this.props.type === 'numeric') {
-            return this.render_text(colorstyle);
+            renderElement = this.render_text(colorstyle);
         }
         else if (this.props.type === 'picker') {
-            return this.render_picker(colorstyle);
+            renderElement = this.render_picker(colorstyle);
         }
-    }
-
-    render_text(colorstyle) {
-        let value = this.state.value;
+        else if (this.props.type === 'date') {
+            renderElement = this.render_date_picker(colorstyle);
+        }
         return (
             <View style={{flexDirection:'column'}}>
                 <View style={{flexDirection:'row', justifyContent:'center'}}>
@@ -109,41 +128,53 @@ class FormElement extends React.Component {
                         {this.props.label}
                     </Text>
                 </View>
+                {renderElement}
+            </View>
+        );
+    }
+
+    render_date_picker(colorstyle) {
+        let value = '';
+        return (
+            <TextInput
+                style={{
+                    ...AppStyles.textInputStyle,
+                    ...this.state.style,
+                    ...colorstyle,
+                }}
+                underlinecolorandroid={this.state.error?AppStyles.formerrorcolor : AppStyles.primarycolor}
+                onFocus = {async () => this.onDateFocus()}
+                onchangetext = {() => {}}
+                value = {value!=null ? value.toString() : ''}
+            />
+        );
+    }
+
+    render_text(colorstyle) {
+        let value = this.state.value;
+        return (
                 <TextInput
                     style={{
                         ...AppStyles.textInputStyle,
                         ...this.state.style,
                         ...colorstyle,
                     }}
-                    underlineColorAndroid={this.state.error?AppStyles.formErrorColor : AppStyles.primaryColor}
+                    underlineColorAndroid={this.state.error?AppStyles.formErrorColor : AppStyles.primarycolor}
                     keyboardType = 'numeric'
                     onChangeText = {(text)=> this.handleChange(text)}
                     value = {value!=null ? value.toString() : ''}
                 />
-            </View>
         );
     }
 
     render_picker(colorstyle) {
         return (
-            <View style={{flexDirection:'column'}}>
-                <View style={{flexDirection:'row', justifyContent:'center'}}>
-                    <Text style={{
-                        ...AppStyles.textStyle,
-                        fontSize: 25,
-                        flex: 1,
-                        ...colorstyle
-                    }}>
-                        {this.props.label}
-                    </Text>
-                </View>
                 <Picker>
                     <Picker.Item label="JavaScript" value="js" />
                     <Picker.Item label="JavaScript" value="js" />
                     <Picker.Item label="JavaScript" value="js" />
                     <Picker.Item label="JavaScript" value="js" />
                 </Picker>
-            </View>
         );
     }
 }
