@@ -142,9 +142,9 @@ class FormElement extends React.Component {
                     ...this.state.style,
                     ...colorstyle,
                 }}
-                underlinecolorandroid={this.state.error?AppStyles.formerrorcolor : AppStyles.primarycolor}
+                underlineColorAndroid={this.state.error?AppStyles.formErrorColor : AppStyles.primaryColor}
                 onFocus = {async () => this.onDateFocus()}
-                onchangetext = {() => {}}
+                onChangeText = {async (text) => this.onDateFocus()}
                 value = {value!=null ? value.toString() : ''}
             />
         );
@@ -159,7 +159,7 @@ class FormElement extends React.Component {
                         ...this.state.style,
                         ...colorstyle,
                     }}
-                    underlineColorAndroid={this.state.error?AppStyles.formErrorColor : AppStyles.primarycolor}
+                    underlineColorAndroid={this.state.error?AppStyles.formErrorColor : AppStyles.primaryColor}
                     keyboardType = 'numeric'
                     onChangeText = {(text)=> this.handleChange(text)}
                     value = {value!=null ? value.toString() : ''}
