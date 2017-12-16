@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, ScrollView, View, Button, TouchableHighlight } from 'react-native';
 import AppStyles from '../appStyles/styles';
+import {getExpenses, getExpenseDetails} from '../api';
 
 const expensesData = [
     {
@@ -87,34 +88,59 @@ export default class Expenses extends React.PureComponent {
                 x.showDetails=false;
                 x.details= [];
                 return x;
-            })
+            }),
+            categories: [],
+            offset: 0,
         }
     }
-
-    _getExpense_details = (i, expense) => {
-        // TODO: make a call, and return obtained details
-        return expenseDetails;
+    async componentWillMount () {
+        const expsdetail = await getExpenses(this.state.offset);
+        let exps = [];
+        if(expsdetail.status) exps = expsdetail.data;
+        this.setState({
+            expenses: exps.map( x => {
+                x.showDate=true;
+                x.showDetails=false;
+                x.details= [];
+                return x;
+            }),
+            offset: this.state.offset+1
+        });
     }
 
-    _handleExpensePress = (i, expense) => {
-        console.log('Pressed: ' + i);
+    _getExpense_details = async (i, expense) => {
+        const details = await getExpenseDetails(expense.date);
+        return details;
+    }
+
+    _handleExpensePress = async (i, expense) => {
         let exps = this.state.expenses.slice();
         if (exps[i].details.length == 0) {
-            exps[i].details = this._getExpense_details(i, expense);
+            const detail = await this._getExpense_details(i, expense);
+            if ( detail.status) {
+                exps[i].details = detail.data;
+            }
+            else exps[i].details = [];
         }
         exps[i].showDetails = !exps[i].showDetails;
         this.setState({expenses:exps});
     }
 
-    loadMore = () => {
+    loadMore = async () => {
         let exps = this.state.expenses.slice();
-        let exps2 = expensesData.map(x => {
+        const expsDetail = await getExpenses(this.state.offset);
+        let moreExps = [];
+        if(expsDetail.status) moreExps=expsDetail.data;
+        let exps2 = moreExps.map(x => {
                 x.showDate=true;
                 x.showDetails=false;
                 x.details= [];
                 return x;
         });
-        this.setState({expenses:[...exps, ...exps2]});
+        this.setState({
+            expenses:[...exps, ...exps2],
+            offset: this.state.offset + 1
+        });
     }
 
     render() {

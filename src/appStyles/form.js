@@ -14,21 +14,31 @@ export default class FormElement extends React.Component {
     }
 
     async onDateFocus() {
+        const today = new Date();
         try {
             const {action, year, month, day} = await DatePickerAndroid.open({
                 // Use `new Date()` for current date.
                 // May 25 2020. Month 0 is January.
-                date: new Date()
+                date: today
             });
             if (action !== DatePickerAndroid.dismissedAction) {
                 let d =  new Date(year, month, day);
+                let dd = new Date(year-1, month, day+1)
+                this.props.onChange(dd.toISOString());
                 this.setState({dateValue: d.toDateString()})
             }
             this.refs.DatePicker.blur();
         } catch ({code, message}) {
+            //this.props.onChange(d.toISOString().substr(0, 10);
             this.refs.DatePicker.blur();
             console.warn('Cannot open date picker', message);
         }
+    }
+
+    handlePickerChange = (v, i) => {
+        this.setState({value:v});
+        console.log('calling onchange, ' + v);
+        this.props.onChange(v);
     }
 
     handleChange = (text) => {
@@ -39,6 +49,7 @@ export default class FormElement extends React.Component {
             });
         }
         else {
+            this.props.onChange(text);
             this.setState({value:text, error:false});
         }
     }
@@ -89,7 +100,7 @@ export default class FormElement extends React.Component {
                 }}
                 underlineColorAndroid={this.state.error?AppStyles.formErrorColor : AppStyles.primaryColor}
                 onFocus = {async () => this.onDateFocus()}
-                onChangeText = {async (text) => this.onDateFocus()}
+                onChangeText = {(text) => this.handleChange(text)}
                 value = {value!=null ? value.toString() : ''}
             />
         );
@@ -121,11 +132,15 @@ export default class FormElement extends React.Component {
 
     render_picker(colorstyle) {
         return (
-                <Picker>
-                    <Picker.Item label="JavaScript" value="js" />
-                    <Picker.Item label="JavaScript" value="js" />
-                    <Picker.Item label="JavaScript" value="js" />
-                    <Picker.Item label="JavaScript" value="js" />
+                <Picker
+                    onValueChange={this.handlePickerChange}
+                    selectedValue={this.state.value}
+                >
+                     {
+                        this.props.items.map((x, i) => (
+                            <Picker.Item key={i} label={x.name} value={x.id} />
+                        ))
+                     }
                 </Picker>
         );
     }

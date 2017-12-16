@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react';
 import SplashScreen from './src/SplashScreen/SplashScreen';
 import HomeScreen from './src/HomeScreen/HomeScreen';
-import AppColors from './src/appStyles/styles';
-import { Text, Alert } from 'react-native';
+import AppStyles from './src/appStyles';
+import { Text, Alert, View} from 'react-native';
 import {Font} from 'expo';
-import {identityHandler} from './src/Helpers';
+import {facebookLogin, handleIdentity} from './src/api';
 import {
   StackNavigator,
 } from 'react-navigation';
@@ -25,14 +25,21 @@ export default class App extends PureComponent {
             'titillium-web-regular': require('./assets/fonts/TitilliumWeb-Regular.ttf'),
             'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
         });
+        const data = await handleIdentity();
+        if (data !== null) {
+            userIdentity = data.identity;
+            const loggedIn = true;
+            const ready = true;
+            this.setState({loggedIn, userIdentity, ready});
+            return;
+        }
         this.setState({ready:true});
     }
 
-    doLogin = (loginFunction) => {
-        const logindata = loginFunction();
-        console.log(logindata);
-        if (logindata.status) {
-            userIdentity = logindata.identity;
+    doLogin = async () => {
+        data = await facebookLogin();
+        if (data.status) {
+            userIdentity = data.identity;
             const loggedIn = true;
             this.setState({loggedIn, userIdentity});
         }
@@ -45,7 +52,16 @@ export default class App extends PureComponent {
         if (!this.state.ready) {
             console.log('NOTREADY');
             return (
-                <Text>Loading..</Text>
+                <View style={{
+                    flex:1,
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    backgroundColor: AppStyles.primaryColor,
+                }}>
+                    <Text style={{flex:1}}>
+                        Making things Ready.. Just for you.
+                    </Text>
+                </View>
             );
         }
         if (!this.state.loggedIn) {
@@ -67,7 +83,7 @@ export const App1 = StackNavigator({
         navigationOptions: {
             title: '',
             headerStyle: {
-                backgroundColor: AppColors.themeColor
+                backgroundColor: AppStyles.themeColor
             }
         }
     },
