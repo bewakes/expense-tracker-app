@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import SplashScreen from './src/SplashScreen/SplashScreen';
 import HomeScreen from './src/HomeScreen/HomeScreen';
 import AppColors from './src/appStyles/styles';
-import { Text } from 'react-native';
+import { Text, Alert } from 'react-native';
 import {Font} from 'expo';
 import {identityHandler} from './src/Helpers';
 import {
@@ -28,15 +28,17 @@ export default class App extends PureComponent {
         this.setState({ready:true});
     }
 
-    onLoginPress = () => {
-        this.doLogin();
-    }
-
-    doLogin = () => {
-        const loggedIn = true;
-        const data = {};
-        const userIdentity = identityHandler(data);
-        this.setState({loggedIn, userIdentity});
+    doLogin = (loginFunction) => {
+        const logindata = loginFunction();
+        console.log(logindata);
+        if (logindata.status) {
+            userIdentity = logindata.identity;
+            const loggedIn = true;
+            this.setState({loggedIn, userIdentity});
+        }
+        else {
+            Alert.alert('message: '+logindata.message);
+        }
     }
 
     render() {
@@ -49,7 +51,7 @@ export default class App extends PureComponent {
         if (!this.state.loggedIn) {
             console.log('NOT LOGGED IN');
             return (
-                <SplashScreen onLoginPress={this.onLoginPress} />
+                <SplashScreen handleLogin={this.doLogin} />
             );
         }
         console.log('LOGGED IN');

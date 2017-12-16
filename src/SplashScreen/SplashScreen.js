@@ -2,10 +2,18 @@ import React, {PureComponent} from 'react';
 import { Button, StatusBar, StyleSheet, TouchableOpacity, Text, TextInput, View } from 'react-native';
 import AppStyles from '../appStyles/styles';
 import {FacebookButton} from '../FacebookLogin';
+import {facebookLogin} from '../api';
 
 class SplashScreen extends PureComponent {
     constructor(props) {
         super(props);
+    }
+
+    handleLoginPress = () => {
+        console.log('splash screen handlelogin');
+        this.props.handleLogin(
+            facebookLogin // pass login function
+        );
     }
 
     render() {
@@ -23,7 +31,7 @@ class SplashScreen extends PureComponent {
             />
                 <SplashTitle />
                 <SplashSubText />
-                <SplashButton onLoginPress={this.props.onLoginPress} />
+                <SplashButton onLoginPress={this.handleLoginPress} />
             </View>
         );
     }
@@ -72,6 +80,7 @@ class SplashButton extends PureComponent {
     }
 
     handleLoginPress = (e) => {
+        console.log('splash button handlelogin');
         this.props.onLoginPress();
     }
 

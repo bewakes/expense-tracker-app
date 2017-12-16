@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, ScrollView, View, Button} from 'react-native';
 import AppStyles, {FormElement} from '../appStyles';
-import {getCategories} from '../apiCalls/Category'; // TODO: import from index.js
+import {getCategories} from '../api';
 
 export default class AddExpense extends React.PureComponent {
     componentDidMount () {
